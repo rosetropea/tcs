@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Token
+comment1.params=type
+comment1.target=Token(Token.TokenType)
+comment2.params=type\ value
+comment2.target=Token(Token.TokenType,\ java.lang.String)
+comment3.params=
+comment3.target=java.util.Optional\ getValue()
+comment4.params=
+comment4.target=Token.TokenType\ getType()
+comment5.params=
+comment5.target=java.lang.String\ toString()
+comment6.params=other
+comment6.target=boolean\ equals(java.lang.Object)
+numComments=7
