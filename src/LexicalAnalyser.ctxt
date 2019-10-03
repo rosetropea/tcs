@@ -2,4 +2,6 @@
 comment0.target=LexicalAnalyser
 comment1.params=sourceCode
 comment1.target=java.util.List\ analyse(java.lang.String)
-numComments=2
+comment2.params=str
+comment2.target=void\ stringCheck(java.lang.String)
+numComments=3
