@@ -37,11 +37,6 @@ public class LexicalAnalyser {
     public static List<Token> analyse(String sourceCode) throws LexicalException {
 
         /**
-           Trim white space in array 
-           Separate into array of strings 
-           Split by whitespace and by terminals? 
-           Check For (String str | array[])
-           if statment for all terminals
            if (str = terminal) then (Add that Token.type(str) to List<Token>)
            else then (str is variable identify ID, Num, String etc (Add to Token.type(variable) to Lis<Token)>))
            return List<Token>;
@@ -56,33 +51,74 @@ public class LexicalAnalyser {
                         value != null && value.length() > 0
                 )
                 .toArray(size -> new String[size]);
-          System.out.println(Arrays.toString(removedNull));
           for(int i=0; i<removedNull.length; ++i){
-            if(false){
-                /**
-                   Check if double terminal i.e. == != <= >= etc
-                   if does find go to double token converter
-                   */
-                /**
-                   Go to token converter
-                   */
-            
+            if(removedNull[i].equals("=")){
+                if(removedNull[i+1].equals("=")){
+                    Token.TokenType type = Token.TokenType.EQUAL;
+                    Token token = new Token(type, "==");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                tokenList.add(tokenID(removedNull[i]));  
+                }            
+             }
+            else if(removedNull[i].equals("!")){
+                if(removedNull[i+1].equals("=")){
+                    Token.TokenType type = Token.TokenType.NEQUAL;
+                    Token token = new Token(type, "!=");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                tokenList.add(tokenID(removedNull[i]));  
+                }            
+             }
+             else if(removedNull[i].equals("<")){
+                if(removedNull[i+1].equals("=")){
+                    Token.TokenType type = Token.TokenType.LE;
+                    Token token = new Token(type, "<=");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                tokenList.add(tokenID(removedNull[i]));  
+                }            
+             }
+             else if(removedNull[i].equals(">")){
+                if(removedNull[i+1].equals("=")){
+                    Token.TokenType type = Token.TokenType.GE;
+                    Token token = new Token(type, ">=");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                tokenList.add(tokenID(removedNull[i]));  
+                }            
             }
+            
+            
             else if(removedNull[i].equals("\'")){
-                
                 tokenList.add(tokenID(removedNull[i]));
-                tokenList.add(variableID(removedNull[i+1]));
-                tokenList.add(tokenID(removedNull[i+2]));
-               
-                i += 2;
+                ++i;
+                String temp = "";
+                while(!removedNull[i].equals("\'")){
+                  temp += removedNull[i];
+                  ++i;
+                }
+                tokenList.add(stringID(temp));
+                tokenList.add(tokenID(removedNull[i]));
             }
             else if(removedNull[i].equals("\"")){
-                
                 tokenList.add(tokenID(removedNull[i]));
-                tokenList.add(stringID(removedNull[i+1]));
-                tokenList.add(tokenID(removedNull[i+2]));
-               
-                i += 2;
+                ++i;
+                String temp = "";
+                while(!removedNull[i].equals("\"")){
+                  temp += removedNull[i];
+                  ++i;
+                }
+                tokenList.add(stringID(temp));
+                tokenList.add(tokenID(removedNull[i]));
             }
             else if(removedNull[i].equals(" ")){
                 /**
@@ -90,16 +126,23 @@ public class LexicalAnalyser {
                    */
             }
             else{
-                throw new LexicalException();
+                try{
+                Integer.parseInt(removedNull[i]);
+                tokenList.add(numberID(removedNull[i]));
+                }
+                catch(NumberFormatException | NullPointerException nfe){
+                    tokenList.add(variableID(removedNull[i]));
+                }
             }
             
+            
             }
-          for(Token t : tokenList)
-            System.out.println(t);
-            return null;
+            for(Token token : tokenList)
+            System.out.println(token);
+            return tokenList;
     }
 
-    public static Token tokenID(String str){
+    public static Token tokenID(String str) throws LexicalException{
         
         if(str.equals("+")){
             Token.TokenType type = Token.TokenType.PLUS;
@@ -241,12 +284,14 @@ public class LexicalAnalyser {
             Token token = new Token(type, str);
             return token;
         }
-        return null;
+        else{
+                throw new LexicalException();
+            }
     }
     /**
         ID, NUM
        */
-    public static Token variableID(String str){
+    public static Token variableID(String str) throws LexicalException{
          if(str.equals("true")){
             Token.TokenType type = Token.TokenType.TRUE;
             Token token = new Token(type, str);
@@ -262,14 +307,33 @@ public class LexicalAnalyser {
             Token token = new Token(type, str);
             return token;
         }
-        return null;
-    }
-    public static Token stringID(String str){
-        if(str.length() == 1){
+        else if(str.length() > 1){
+            Token.TokenType type = Token.TokenType.ID;
+            Token token = new Token(type, str);
+            return token;
+        }
+        else{
+                throw new LexicalException();
+            }
+            }
+    public static Token stringID(String str) throws LexicalException{
+        if(str.length() != 1){
             Token.TokenType type = Token.TokenType.STRINGLIT;
             Token token = new Token(type, str);
             return token;
         }
-        return null;
+        else{
+                throw new LexicalException();
+            }
+    }
+        public static Token numberID(String str) throws LexicalException{
+        if(str.length() != 1){
+            Token.TokenType type = Token.TokenType.NUM;
+            Token token = new Token(type, str);
+            return token;
+        }
+        else{
+                throw new LexicalException();
+            }
     }
 }
