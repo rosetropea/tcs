@@ -5,6 +5,8 @@ import java.util.LinkedList;
 public class SyntacticAnalyser {
 
      Deque<Token> deque = new LinkedList<Token>(); 
+     List stack = new LinkedList<Token>();
+     State state = prog;
      
     public ParseTree<Token> parse(List<Token> tokens) throws SyntaxException {
         
