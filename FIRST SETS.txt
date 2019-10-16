@@ -1,0 +1,33 @@
+FIRST SETS
+
+FIRST(<< >>) = {}
+
+FIRST(<<prog>>) = {public}
+FIRST(<<los>>)  = {while, for, if, ID, int, boolean, char, System.out.print, ;, EPSILON}
+FIRST(<<stat>>) = {while, for, if, ID, int, boolean, char}
+FIRST(<<while>>) = {while}
+FIRST(<<for>>) = {for}
+FIRST(<<for start>>) = {int, char, boolean, ID, EPSILON}
+FIRST(<<for arith>>) = {(, ID, NUM, EPSILON}
+FIRST(<<if>>) = {if}
+FIRST(<<else if>>) = {else, EPSILON}
+FIRST(<<else?if>>) = {else}
+FIRST(<<poss if>>) = {if, EPSILON}
+FIRST(<<assign>>) = {ID}
+FIRST(<<decl>>) = {int, boolean, char}
+FIRST(<<poss assign>>) = {=, EPSILON}
+FIRST(<<type>>) = {int, boolean, char}
+FIRST(<<expr>>) = {(, ID, NUM, CHAREXPR}
+FIRST(<<bool expr'>>) = {==, !=, &&, ||, EPSILON}
+FIRST(<<bool op>>) = {==, !=, &&, ||}
+FIRST(<<bool eq>>) = {==, !=}
+FIRST(<<bool log>>) = {&&, ||}
+FIRST(<<rel expr>>) = {ID, NUM, true, false}
+FIRST(<<rel expr'>>) = {<, <=, >, >=, EPSILON}
+FIRST(<<rel op>>) = {<, <=, >, >=}
+FIRST(<<arith expr>>) = {(, ID, NUM}
+FIRST(<<arith expr'>>) = {+, -, EPSILON}
+FIRST(<<term>>) = {(, ID, NUM}
+FIRST(<<term'>>) = {*, /, %, EPSILON}
+FIRST(<<factor>>) = {(, ID, NUM}
+FIRST(<<print expr>>) = {(, ID, NUM}
