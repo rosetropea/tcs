@@ -14,6 +14,7 @@ FOLLOW(<<poss if>>) = {{}
 FOLLOW(<<assign>>) = {;}
 FOLLOW(<<decl>>) = {;}
 FOLLOW(<<poss assign>>) = {;}
+FOLLOW(<<print>>) = {while, for, if, ID, int, boolean, char, System.out.print, ;}
 FOLLOW(<<type>>) = {ID}
 FOLLOW(<<expr>>) = {;}
 FOLLOW(<<bool expr'>>) = {), ;}

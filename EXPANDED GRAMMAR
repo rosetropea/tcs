@@ -1,7 +1,7 @@
 <<prog>> ::= public class <<ID>> { public static void main ( String[] args ) { <<los>> } }
 <<los>> ::= <<stat>> <<los>> 
-<<los>> ::= <<epsilon>>
-<<stat>> ::= <<while>> 
+<los>> ::= <<epsilon>>
+<<stat>> ::= <<while> 
 <<stat>> ::= <<for>> 
 <<stat>> ::= <<if>>  
 <<stat>> ::= <<assign>> ; 
@@ -35,30 +35,30 @@
 <<bool expr'>> ::= <<epsilon>>
 <<bool op>> ::= <<bool eq>> 
 <<bool op>> ::= <<bool log>>
-<<bool eq>> ::= == 
-<<bool eq>> ::= !=
-<<bool log>> ::= && 
-<<bool log>> ::= ||
-<<rel expr>> ::= <<arith expr>> <<rel expr'>> 
-<<rel expr>> ::= true 
-<<rel expr>> ::= false
-<<rel expr'>> ::= <<rel op>> <<arith expr>> 
-<<rel expr'>> ::= <<epsilon>>
-<<rel op>> ::= < 
-<<rel op>> ::= <= 
-<<rel op>> ::= > 
-<<rel op>> ::= >=
-<<arith expr>> ::= <<term>> <<arith expr'>>
-<<arith expr'>> ::= + <<term>> <<arith expr'>> 
-<<arith expr'>> ::= - <<term>> <<arith expr'>> 
-<<arith expr' ::= <<epsilon>>
-<<term>> ::= <<factor>> <<term'>>
-<<term'>> ::= * <<factor>> <<term'>> 
-<<term'>> ::= / <<factor>> <<term'>> 
-<<term'>> ::= % <<factor>> <<term'>> 
-<<term'>> ::= <<epsilon>>
-<<factor>> ::= ( <<arith expr>> ) 
-<<factor>> ::= <<ID>> 
-<<factor>> ::= <<num>>
+//<<bool eq>> ::= == 
+//<<bool eq>> ::= !=
+//<<bool log>> ::= && 
+//<<bool log>> ::= ||
+//<<rel expr>> ::= <<arith expr>> <<rel expr'>> 
+//<<rel expr>> ::= true 
+//<<rel expr>> ::= false
+//<<rel expr'>> ::= <<rel op>> <<arith expr>> 
+//<<rel expr'>> ::= <<epsilon>>
+//<<rel op>> ::= < 
+//<<rel op>> ::= <= 
+//<<rel op>> ::= > 
+//<<rel op>> ::= >=
+//<<arith expr>> ::= <<term>> <<arith expr'>>
+//<<arith expr'>> ::= + <<term>> <<arith expr'>> 
+//<<arith expr'>> ::= - <<term>> <<arith expr'>> 
+//<<arith expr' ::= <<epsilon>>
+//<<term>> ::= <<factor>> <<term'>>
+//<<term'>> ::= * <<factor>> <<term'>> 
+//<<term'>> ::= / <<factor>> <<term'>> 
+//<<term'>> ::= % <<factor>> <<term'>> 
+//<<term'>> ::= <<epsilon>>
+//<<factor>> ::= ( <<arith expr>> ) 
+//<<factor>> ::= <<ID>> 
+//<<factor>> ::= <<num>>
 <<print expr>> ::= <<rel expr>> <<bool expr'>> 
 <<print expr>> ::= <<string lit>>
