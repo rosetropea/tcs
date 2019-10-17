@@ -16,7 +16,6 @@ FIRST(<<poss if>>) = {if, EPSILON}
 FIRST(<<assign>>) = {ID}
 FIRST(<<decl>>) = {int, boolean, char}
 FIRST(<<poss assign>>) = {=, EPSILON}
-FIRST(<<print>>) {System.out.print}
 FIRST(<<type>>) = {int, boolean, char}
 FIRST(<<expr>>) = {(, ID, NUM, CHAREXPR, TRUE, FALSE}
 FIRST(<<bool expr'>>) = {==, !=, &&, ||, EPSILON}
