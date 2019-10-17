@@ -8,7 +8,7 @@ FOLLOW(<<for>>) = {while, for, if, ID, int, boolean, char, System.out.print, ;}
 FOLLOW(<<for start>>) = {;}
 FOLLOW(<<for arith>>) = {)}
 FOLLOW(<<if>>) = {while, for, if, ID, int, boolean, char, System.out.print, ;}
-FOLLOW(<<else if>>) = {{}
+FOLLOW(<<else if>>) = {while, for, if, ID, int, boolean, char, System.out.print, ;}
 FOLLOW(<<else?if>>) = {{}
 FOLLOW(<<poss if>>) = {{}
 FOLLOW(<<assign>>) = {;}
@@ -16,16 +16,16 @@ FOLLOW(<<decl>>) = {;}
 FOLLOW(<<poss assign>>) = {;}
 FOLLOW(<<type>>) = {ID}
 FOLLOW(<<expr>>) = {;}
-FOLLOW(<<bool expr'>>) = {==, !=, &&, ||}
-FOLLOW(<<bool op>>) = {ID, NUM, true, false}
-FOLLOW(<<bool eq>>) = {ID, NUM, true, false}
+FOLLOW(<<bool expr'>>) = {), ;}
+FOLLOW(<<bool op>>) = {(, ID, NUM, true, false}
+FOLLOW(<<bool eq>>) = {(, ID, NUM, true, false}
 FOLLOW(<<bool log>>) = {ID, NUM, true, false}
 FOLLOW(<<rel expr>>) = {==, !=, &&, ||}
 FOLLOW(<<rel expr'>>) = {==, !=, &&, ||}
 FOLLOW(<<rel op>>) = {(, ID, NUM}
 FOLLOW(<<arith expr>>) = {), ==, !=, &&, ||, <, <=, >, >=}
 FOLLOW(<<arith expr'>>) = {), ==, !=, &&, ||, <, <=, >, >=}
-FOLLOW(<<term>>) = {+, -}
+FOLLOW(<<term>>) = {+, -, (, ID, NUM}
 FOLLOW(<<term'>>) = {+, -}
 FOLLOW(<<factor>>) = {*, /, %}
 FOLLOW(<<print expr>>) = {)}
