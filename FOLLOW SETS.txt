@@ -25,7 +25,7 @@ FOLLOW(<<rel expr'>>) = {==, !=, &&, ||}
 FOLLOW(<<rel op>>) = {(, ID, NUM}
 FOLLOW(<<arith expr>>) = {), ==, !=, &&, ||, <, <=, >, >=}
 FOLLOW(<<arith expr'>>) = {), ==, !=, &&, ||, <, <=, >, >=}
-FOLLOW(<<term>>) = {+, -, (, ID, NUM}
+FOLLOW(<<term>>) = {+, -}
 FOLLOW(<<term'>>) = {+, -}
 FOLLOW(<<factor>>) = {*, /, %}
 FOLLOW(<<print expr>>) = {)}
