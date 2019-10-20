@@ -1,0 +1,64 @@
+<<prog>> ::= public class <<ID>> { public static void main ( String[] args ) { <<los>> } }
+<<los>> ::= <<stat>> <<los>> 
+<los>> ::= <<epsilon>>
+<<stat>> ::= <<while> 
+<<stat>> ::= <<for>> 
+<<stat>> ::= <<if>>  
+<<stat>> ::= <<assign>> ; 
+<<stat>> ::= <<decl>> ;  
+<<stat>> ::= <<print>> ; 
+<<stat>> ::= ;
+<<while>> ::= while ( <<rel expr>> <<bool expr'>> ) { <<los>> }
+<<for>> ::= for ( <<for start>> ; <<rel expr>> <<bool expr'>> ; <<for arith>> ) { <<los>> }
+<<for start>> ::= <<decl>> 
+<<for start ::= <<assign>> 
+<<for start ::= <<epsilon>>
+<<for arith>> ::= <<arith expr>> 
+<<for arith>> ::= <<epsilon>>
+<<if>> ::= if ( <<rel expr>> <<bool expr'>> ) { <<los>> } <<else if>>
+<<else if>> ::= <<else?if>> { <<los>> } <<else if>> 
+<<else if>> ::= <<epsilon>>
+<<else?if>> ::= else <<poss if>>
+<<poss if>> ::= if ( <<rel expr>> <<bool expr'>> ) 
+<<poss if>> ::= <<epsilon>>
+<<assign>> ::= <<ID>> = <<expr>>
+<<decl>> ::= <<type>> <<ID>> <<poss assign>>
+<<poss assign>> ::= = <<expr>> 
+<<poss assign>> ::== <<epsilon>>
+<<print>> ::= System.out.print( <<print expr>> )
+<<type>> ::= int 
+<<type>> ::= boolean 
+<<type>> ::= char
+<<expr>> ::= <<rel expr>> <<bool expr'>> 
+<<expr>> ::= <<char expr>>
+<<bool expr'>> ::= <<bool op>> <<rel expr>> <<bool expr'>> 
+<<bool expr'>> ::= <<epsilon>>
+<<bool op>> ::= <<bool eq>> 
+<<bool op>> ::= <<bool log>>
+//<<bool eq>> ::= == 
+//<<bool eq>> ::= !=
+//<<bool log>> ::= && 
+//<<bool log>> ::= ||
+//<<rel expr>> ::= <<arith expr>> <<rel expr'>> 
+//<<rel expr>> ::= true 
+//<<rel expr>> ::= false
+//<<rel expr'>> ::= <<rel op>> <<arith expr>> 
+//<<rel expr'>> ::= <<epsilon>>
+//<<rel op>> ::= < 
+//<<rel op>> ::= <= 
+//<<rel op>> ::= > 
+//<<rel op>> ::= >=
+//<<arith expr>> ::= <<term>> <<arith expr'>>
+//<<arith expr'>> ::= + <<term>> <<arith expr'>> 
+//<<arith expr'>> ::= - <<term>> <<arith expr'>> 
+//<<arith expr' ::= <<epsilon>>
+//<<term>> ::= <<factor>> <<term'>>
+//<<term'>> ::= * <<factor>> <<term'>> 
+//<<term'>> ::= / <<factor>> <<term'>> 
+//<<term'>> ::= % <<factor>> <<term'>> 
+//<<term'>> ::= <<epsilon>>
+//<<factor>> ::= ( <<arith expr>> ) 
+//<<factor>> ::= <<ID>> 
+//<<factor>> ::= <<num>>
+<<print expr>> ::= <<rel expr>> <<bool expr'>> 
+<<print expr>> ::= <<string lit>>
