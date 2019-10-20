@@ -46,7 +46,10 @@ public class LexicalAnalyser {
           for (int a=0; a<array.length; ++a){
               array[a].trim();
             }
-          String[] removedNull = Arrays.stream(array)
+          String[] trimmedArray = new String[array.length];
+          for (int i =0; i<array.length; i++)
+                trimmedArray[i] = array[i].trim();
+          String[] removedNull = Arrays.stream(trimmedArray)
                 .filter(value ->
                         value != null && value.length() > 0
                 )
@@ -106,7 +109,7 @@ public class LexicalAnalyser {
                   temp += removedNull[i];
                   ++i;
                 }
-                tokenList.add(stringID(temp));
+                tokenList.add(charID(temp));
                 tokenList.add(tokenID(removedNull[i]));
             }
             else if(removedNull[i].equals("\"")){
@@ -131,7 +134,7 @@ public class LexicalAnalyser {
                 tokenList.add(numberID(removedNull[i]));
                 }
                 catch(NumberFormatException | NullPointerException nfe){
-                    tokenList.add(variableID(removedNull[i]));
+                    tokenList.add(tokenID(removedNull[i]));
                 }
             }
             
@@ -285,7 +288,8 @@ public class LexicalAnalyser {
             return token;
         }
         else{
-                throw new LexicalException();
+            Token token = variableID(str);
+                return token;
             }
     }
     /**
@@ -302,12 +306,7 @@ public class LexicalAnalyser {
             Token token = new Token(type, str);
             return token;
         }
-        else if(str.length() == 1){
-            Token.TokenType type = Token.TokenType.CHARLIT;
-            Token token = new Token(type, str);
-            return token;
-        }
-        else if(str.length() > 1){
+        else if(str.length() >= 1){
             Token.TokenType type = Token.TokenType.ID;
             Token token = new Token(type, str);
             return token;
@@ -317,7 +316,7 @@ public class LexicalAnalyser {
             }
             }
     public static Token stringID(String str) throws LexicalException{
-        if(str.length() != 1){
+        if(true){
             Token.TokenType type = Token.TokenType.STRINGLIT;
             Token token = new Token(type, str);
             return token;
@@ -325,9 +324,19 @@ public class LexicalAnalyser {
         else{
                 throw new LexicalException();
             }
-    }
+            }
+    public static Token charID(String str) throws LexicalException{
+         if(str.length() == 1){
+            Token.TokenType type = Token.TokenType.CHARLIT;
+            Token token = new Token(type, str);
+            return token;
+        }
+        else{
+            throw new LexicalException();
+        }
+            }
         public static Token numberID(String str) throws LexicalException{
-        if(str.length() != 1){
+        if(true){
             Token.TokenType type = Token.TokenType.NUM;
             Token token = new Token(type, str);
             return token;

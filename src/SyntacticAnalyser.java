@@ -21,6 +21,9 @@ public class SyntacticAnalyser {
         // Check off each token until next <<???>>
         // when it reaches <<???>> repeat from 1 with new <<prog>>
         int i = 0;
+        if(tokens.size() == 0){
+            throw new SyntaxException();
+        }
         while (i < tokens.size()-1) {
         
         
@@ -762,8 +765,9 @@ public class SyntacticAnalyser {
             throw new SyntaxException();
             }
         }
+        int coint = 3 + 2 * 5;
         return parseTree;
-
+        
     }
     public static boolean tokenCompare(StackToken t, Token input){
         //Check if token input matches stack token
