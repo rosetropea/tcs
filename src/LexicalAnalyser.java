@@ -128,6 +128,28 @@ public class LexicalAnalyser {
                    Do nothing
                    */
             }
+            else if(removedNull[i].equals("|")){
+                if(removedNull[i+1].equals("|")){
+                    Token.TokenType type = Token.TokenType.OR;
+                    Token token = new Token(type, "||");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                    throw new LexicalException();  
+                }            
+             }
+             else if(removedNull[i].equals("&")){
+                if(removedNull[i+1].equals("&")){
+                    Token.TokenType type = Token.TokenType.AND;
+                    Token token = new Token(type, "&&");
+                    tokenList.add(token);
+                    ++i;
+                }
+                else{
+                    throw new LexicalException(); 
+                }            
+             }
             else{
                 try{
                 Integer.parseInt(removedNull[i]);
@@ -307,6 +329,11 @@ public class LexicalAnalyser {
             return token;
         }
         else if(str.length() >= 1){
+            for (char c : str.toCharArray()){
+                if (!Character.isLetterOrDigit(c)){
+                    throw new LexicalException();
+                }
+            }
             Token.TokenType type = Token.TokenType.ID;
             Token token = new Token(type, str);
             return token;
