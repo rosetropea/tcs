@@ -9,10 +9,10 @@ public class SyntacticAnalyser {
         Deque<StackToken> stack = new LinkedList<>();
         LinkedList<ParseTree.TreeNode> metadata = new LinkedList();
         ParseTree<Token> parseTree = new ParseTree();
-        ParseTree.TreeNode treenode = parseTree.new TreeNode(null, null);
-        parseTree.setRoot(treenode);
+        ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.prog, null);
+        parseTree.setRoot(child);
         stack.add(StackToken.prog);
-        metadata.add(treenode);
+        metadata.add(child);
         
         
         //  METHOD PLAN:
@@ -28,7 +28,7 @@ public class SyntacticAnalyser {
         if(tokens.size() == 0){
             throw new SyntaxException();
         }
-        while (i < tokens.size()-1) {
+        while (i < tokens.size()) {
         
         
          if(stack.getLast().equals(StackToken.PLUS) || stack.getLast().equals(StackToken.MINUS)|| stack.getLast().equals(StackToken.TIMES)|| stack.getLast().equals(StackToken.DIVIDE)
@@ -44,17 +44,16 @@ public class SyntacticAnalyser {
             //Compare to token list
             StackToken temp = stack.getLast();
             if(tokenCompare(temp, tokens.get(i))){
-                ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.terminal, tokens.get(i), metadata.getLast());
+                child = parseTree.new TreeNode(ParseTree.Label.terminal, tokens.get(i), metadata.getLast());
                 stack.removeLast();
                 metadata.removeLast();
             }
             else{
-             throw new SyntaxException();
+                throw new SyntaxException();
             }
             ++i;
          }
          else if(stack.getLast() == StackToken.prog && tokens.get(i).getType() == Token.TokenType.PUBLIC){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.prog,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RBRACE);
@@ -93,7 +92,7 @@ public class SyntacticAnalyser {
         else if(stack.getLast() == StackToken.los && (tokens.get(i).getType() == Token.TokenType.ID || tokens.get(i).getType() == Token.TokenType.TYPE || tokens.get(i).getType() == Token.TokenType.PRINT
         || tokens.get(i).getType() == Token.TokenType.WHILE||tokens.get(i).getType() == Token.TokenType.FOR||tokens.get(i).getType() == Token.TokenType.IF||tokens.get(i).getType() == Token.TokenType.SEMICOLON
         )){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.los, metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.los, metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.los);
@@ -101,8 +100,15 @@ public class SyntacticAnalyser {
             stack.add(StackToken.stat);
             metadata.add(child);
         }
+        else if(stack.getLast() == StackToken.los){
+            child = parseTree.new TreeNode(ParseTree.Label.los, metadata.getLast());
+            stack.removeLast();
+            metadata.removeLast();
+            stack.add(StackToken.epsilon);
+            metadata.add(child);
+        }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
@@ -112,7 +118,7 @@ public class SyntacticAnalyser {
             
         }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.TYPE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
@@ -122,7 +128,7 @@ public class SyntacticAnalyser {
             
         }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.PRINT){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
@@ -131,42 +137,42 @@ public class SyntacticAnalyser {
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.WHILE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.whilestat);
             metadata.add(child);
                    }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.FOR){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.forstat);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.IF){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.ifstat);
             metadata.add(child);
                    }
         else if(stack.getLast() == StackToken.stat && tokens.get(i).getType() == Token.TokenType.SEMICOLON){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.stat){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.los,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.los,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.whilestat && tokens.get(i).getType() == Token.TokenType.WHILE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.whilestat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.whilestat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RBRACE);
@@ -187,7 +193,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.forstat && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forstat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forstat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RBRACE);
@@ -216,7 +222,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.forstart && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
@@ -225,7 +231,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.forstart && tokens.get(i).getType() == Token.TokenType.TYPE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SEMICOLON);
@@ -234,42 +240,42 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.forstart && tokens.get(i).getType() == Token.TokenType.SEMICOLON){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.forstart){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forstart,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.forarith && (tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM||tokens.get(i).getType() == Token.TokenType.LPAREN)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.arithexpr);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.forarith && tokens.get(i).getType() == Token.TokenType.RPAREN){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.forarith){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.forarith,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.ifstat && tokens.get(i).getType() == Token.TokenType.IF){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.ifstat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.ifstat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.elseifstat);
@@ -295,14 +301,14 @@ public class SyntacticAnalyser {
         ||tokens.get(i).getType() == Token.TokenType.PRINT||tokens.get(i).getType() == Token.TokenType.WHILE||
         tokens.get(i).getType() == Token.TokenType.FOR||tokens.get(i).getType() == Token.TokenType.IF
         ||tokens.get(i).getType() == Token.TokenType.SEMICOLON)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.elseifstat && tokens.get(i).getType() == Token.TokenType.ELSE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.elseifstat);
@@ -317,28 +323,28 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.elseifstat){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.elseifstat,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }   
         else if(stack.getLast() == StackToken.elseorelseif && tokens.get(i).getType() == Token.TokenType.ELSE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.elseorelseif,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.elseorelseif,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.possif);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.possif && tokens.get(i).getType() == Token.TokenType.LBRACE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.possif && tokens.get(i).getType() == Token.TokenType.IF){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RPAREN);
@@ -353,14 +359,14 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.possif){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possif,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.assign && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.assign,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.assign,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.expr);
@@ -371,7 +377,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.decl && tokens.get(i).getType() == Token.TokenType.TYPE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.decl,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.decl,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.possassign);
@@ -382,7 +388,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.possassign && tokens.get(i).getType() == Token.TokenType.ASSIGN){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.expr);
@@ -391,21 +397,21 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.possassign && tokens.get(i).getType() == Token.TokenType.SEMICOLON){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.possassign){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.possassign,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
                     }
         else if(stack.getLast() == StackToken.print && tokens.get(i).getType() == Token.TokenType.PRINT){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.print,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.print,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RPAREN);
@@ -419,7 +425,7 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.expr && (tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM
         ||tokens.get(i).getType() == Token.TokenType.LBRACE||tokens.get(i).getType() == Token.TokenType.FALSE||tokens.get(i).getType() == Token.TokenType.TRUE)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.expr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.expr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.boolexprprime);
@@ -428,7 +434,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.expr && tokens.get(i).getType() == Token.TokenType.CHARLIT){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.expr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.expr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.charexpr);
@@ -437,7 +443,7 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.boolexprprime && (tokens.get(i).getType() == Token.TokenType.AND||tokens.get(i).getType() == Token.TokenType.OR
         ||tokens.get(i).getType() == Token.TokenType.EQUAL||tokens.get(i).getType() == Token.TokenType.NEQUAL)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.boolop);
@@ -448,42 +454,42 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.boolexprprime && (tokens.get(i).getType() == Token.TokenType.SEMICOLON||tokens.get(i).getType() == Token.TokenType.RPAREN)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.boolexprprime){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boolexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.boolop && (tokens.get(i).getType() == Token.TokenType.EQUAL||tokens.get(i).getType() == Token.TokenType.NEQUAL)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boolop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boolop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.booleq);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.boolop && (tokens.get(i).getType() == Token.TokenType.AND||tokens.get(i).getType() == Token.TokenType.OR)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boolop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boolop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.boollog);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.booleq && tokens.get(i).getType() == Token.TokenType.EQUAL){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.booleq,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.booleq,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.EQUAL);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.booleq && tokens.get(i).getType() == Token.TokenType.NEQUAL){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.booleq,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.booleq,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.NEQUAL);
@@ -491,14 +497,14 @@ public class SyntacticAnalyser {
         }
         
         else if(stack.getLast() == StackToken.boollog && tokens.get(i).getType() == Token.TokenType.AND){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boollog,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boollog,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.AND);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.boollog && tokens.get(i).getType() == Token.TokenType.OR){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.boollog,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.boollog,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.OR);
@@ -506,19 +512,23 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.relexpr && (tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM
         ||tokens.get(i).getType() == Token.TokenType.LBRACE)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
+            stack.add(StackToken.relexprprime);
+            metadata.add(child);
+            stack.add(StackToken.arithexpr);
+            metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relexpr && tokens.get(i).getType() == Token.TokenType.TRUE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.TRUE);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relexpr && tokens.get(i).getType() == Token.TokenType.FALSE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.FALSE);
@@ -529,7 +539,7 @@ public class SyntacticAnalyser {
         ||tokens.get(i).getType() == Token.TokenType.LE
         ||tokens.get(i).getType() == Token.TokenType.GT
         ||tokens.get(i).getType() == Token.TokenType.LT)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.arithexpr);
@@ -541,42 +551,42 @@ public class SyntacticAnalyser {
         ||tokens.get(i).getType() == Token.TokenType.NEQUAL
         ||tokens.get(i).getType() == Token.TokenType.AND
         ||tokens.get(i).getType() == Token.TokenType.OR)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relexprprime){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relop && tokens.get(i).getType() == Token.TokenType.LT){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.LT);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relop && tokens.get(i).getType() == Token.TokenType.GT){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.GT);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relop && tokens.get(i).getType() == Token.TokenType.GE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.GE);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.relop && tokens.get(i).getType() == Token.TokenType.LE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.relop,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.LE);
@@ -584,7 +594,7 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.arithexpr && (tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM
         ||tokens.get(i).getType() == Token.TokenType.LBRACE)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.arithexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.arithexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.arithexprprime);
@@ -593,7 +603,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.arithexprprime && tokens.get(i).getType() == Token.TokenType.PLUS){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.arithexprprime);
@@ -604,7 +614,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.arithexprprime && tokens.get(i).getType() == Token.TokenType.MINUS){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.arithexprprime);
@@ -623,14 +633,14 @@ public class SyntacticAnalyser {
         ||tokens.get(i).getType() == Token.TokenType.RBRACE
         ||tokens.get(i).getType() == Token.TokenType.GT
         ||tokens.get(i).getType() == Token.TokenType.LT)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.arithexprprime){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.arithexprprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
@@ -638,7 +648,7 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.term && (tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM
         ||tokens.get(i).getType() == Token.TokenType.LBRACE)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.term,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.term,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.termprime);
@@ -647,7 +657,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.termprime && tokens.get(i).getType() == Token.TokenType.DIVIDE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.termprime);
@@ -658,7 +668,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.termprime && tokens.get(i).getType() == Token.TokenType.MOD){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.termprime);
@@ -669,7 +679,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.termprime && tokens.get(i).getType() == Token.TokenType.TIMES){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.termprime);
@@ -680,7 +690,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.termprime && (tokens.get(i).getType() == Token.TokenType.PLUS||tokens.get(i).getType() == Token.TokenType.MINUS)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
@@ -688,7 +698,7 @@ public class SyntacticAnalyser {
             
         }
         else if(stack.getLast() == StackToken.termprime){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.termprime,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.epsilon);
@@ -696,21 +706,21 @@ public class SyntacticAnalyser {
             
         }
         else if(stack.getLast() == StackToken.factor && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.ID);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.factor && tokens.get(i).getType() == Token.TokenType.NUM){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.NUM);
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.factor && tokens.get(i).getType() == Token.TokenType.LPAREN){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.factor,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.RPAREN);
@@ -722,7 +732,7 @@ public class SyntacticAnalyser {
         }
         else if(stack.getLast() == StackToken.printexpr &&(tokens.get(i).getType() == Token.TokenType.ID||tokens.get(i).getType() == Token.TokenType.NUM
         ||tokens.get(i).getType() == Token.TokenType.LBRACE)){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.printexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.printexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.boolexprprime);
@@ -731,7 +741,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.printexpr && tokens.get(i).getType() == Token.TokenType.DQUOTE){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.printexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.printexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.stringlit);
@@ -739,7 +749,7 @@ public class SyntacticAnalyser {
             
         }
         else if(stack.getLast() == StackToken.charexpr && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.charexpr,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.charexpr,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.SQUOTE);
@@ -750,7 +760,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.stringlit && tokens.get(i).getType() == Token.TokenType.ID){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.stringlit,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.stringlit,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
             stack.add(StackToken.DQUOTE);
@@ -761,7 +771,7 @@ public class SyntacticAnalyser {
             metadata.add(child);
         }
         else if(stack.getLast() == StackToken.epsilon){
-            ParseTree.TreeNode child = parseTree.new TreeNode(ParseTree.Label.epsilon,metadata.getLast());
+            child = parseTree.new TreeNode(ParseTree.Label.epsilon,metadata.getLast());
             stack.removeLast();
             metadata.removeLast();
         }
@@ -769,11 +779,14 @@ public class SyntacticAnalyser {
             throw new SyntaxException();
             }
         }
-        int coint = 3 + 2 * 5;
+        if(!stack.isEmpty()){
+            throw new SyntaxException();
+        }
+        System.out.println(parseTree);
         return parseTree;
         
     }
-    public static boolean tokenCompare(StackToken t, Token input){
+    public static boolean tokenCompare(StackToken t, Token input) throws SyntaxException{
         //Check if token input matches stack token
         //Add treenode with terminal label, token input and metadata parent
         if(t == StackToken.PLUS && input.getType() == Token.TokenType.PLUS){
@@ -977,7 +990,7 @@ public class SyntacticAnalyser {
             return true;
         }
         else {
-            return false;
+            throw new SyntaxException();
             }
     }
     
